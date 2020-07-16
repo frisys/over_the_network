@@ -1,3 +1,4 @@
+import json
 import logging
 import logging.handlers
 import pickle
@@ -26,6 +27,8 @@ class LogRecordStreamHandler(socketserver.StreamRequestHandler):
             while len(chunk) < slen:
                 chunk = chunk + self.connection.recv(slen - len(chunk))
             obj = self.unpickle(chunk)
+            my_param = json.loads(obj["my_param"])
+            print("parameter from client side : %s" % my_param["logger"])
             record = logging.makeLogRecord(obj)
             self.handle_log_record(record)
 
